@@ -10,8 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', 'ContentsController@home')->name('home');
+Route::middleware(['auth'])->group(function () {
+   Route::get('/', 'ContentsController@home')->name('home');
 Route::get('/clients', 'ClientController@index')->name('clients');
 Route::get('/clients/new', 'ClientController@newClient')->name('new_client');
 Route::post('/clients/new', 'ClientController@newClient')->name('create_client');
@@ -22,7 +22,10 @@ Route::get('/reservations/{client_id}', 'RoomsController@checkAvailableRooms')->
 Route::post('/reservations/{client_id}', 'RoomsController@checkAvailableRooms')->name('check_room');
 
 Route::get('/book/room/{client_id}/{room_id}/{date_in}/{date_out}', 'ReservationsController@bookRoom')->name('book_room');
-
+Route::get('export','ClientController@export')->name('export'); 
+Route::get('/upload','ContentsController@upload')->name('upload');
+Route::post('/upload','ContentsController@upload')->name('upload');
+});
 
 
 Route::get('/about', function () {
@@ -60,3 +63,6 @@ Route::get('/facades/decrypt', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/generate/password', function(){
+    return bcrypt('123456789');
+});

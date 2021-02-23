@@ -124,4 +124,12 @@ class ClientController extends Controller
             return redirect('clients');
         }
     }
+
+    public function export()
+    {
+        $data = [];
+        $data['clients'] = $this->client->all();
+        header('Content-Disposition:attachment; filename="export.xls');
+        return view('client/export',$data);
+    }
 }
